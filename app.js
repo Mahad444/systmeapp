@@ -2,15 +2,17 @@ const express = require('express')
 const app = express();
 const  {engine} = require('express-handlebars');
 const bodyParser = require('body-parser')
-const mysql = require('mysql')
+const mysql = require('mysql');
 require('dotenv').config();
 
 
 //Middleware for pasresr
 //parse application/x-www-forms-urlencoded 
+
 app.use(bodyParser.urlencoded({extended : false}));
 //midlleware for json
 app.use(bodyParser.json());
+ 
 
 //the below code is for this app to require external folder like css,html,js e.t.c
 app.use(express.static('public'));
@@ -30,8 +32,8 @@ app.set('views','./views');
      user            :process.env.DB_USER,
      password        :process.env.DB_PASS,
      database        :process.env.DB_NAME,
-  })
-
+  }) ; 
+ 
 //   connecting to DB
  
 pool.getConnection((err,connection)=>{
@@ -47,11 +49,11 @@ pool.getConnection((err,connection)=>{
 //routes
 app.get('/',(req,res,)=>{
     res.render('home.hbs');
-})
+});
 
 const port = process.env.PORT || 9500;
 
 app.listen(port,()=>{
     console.log(`Now listening to http://localhost:${port}`)
-})
+});
 

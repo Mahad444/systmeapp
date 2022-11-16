@@ -1,8 +1,9 @@
-const express = require('express')
+const express = require('express');
 const app = express();
 const  {engine} = require('express-handlebars');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 const mysql = require('mysql');
+const routes = require('./server/routes/user')
 require('dotenv').config();
 
 
@@ -44,12 +45,8 @@ pool.getConnection((err,connection)=>{
 });
 
 
+app.use('/' , routes)
 
-
-//routes
-app.get('/',(req,res,)=>{
-    res.render('home.hbs');
-});
 
 const port = process.env.PORT || 9500;
 

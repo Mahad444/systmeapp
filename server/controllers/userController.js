@@ -73,10 +73,25 @@ module.exports = {
     forms:(req,res)=>{
         res.render('adduser')
     },
-    create:(req,res)=>{
-        const {FirstName,LastName,email,phone,comments} = req.body
-        
 
+    // CREATING A USER
+    create:(req,res)=>{
+        const {FirstName,LastName,email,phone,comments} = req.body;
+        pool.getConnection((err,connection)=>{
+
+            if (err) throw err ;
+            console.log('connected as ID' + connection.threadId);
+            connection.query("INSERT INTO users SET FirstName = ? , LastName = ?, email = ?, phone = ? , comments  = ? ",[FirstName,LastName,email,phone,comments],(err, rows)=>{
+        connection.release();
+        if(!err)
+        res.render('adduser',{alert : "User Create Successfully."});
+        else{
+        console.log(err);
+    }
+    console.log('the data from the usermanagement Db: \n', rows)
+
+    });
+     });
     }
 
 }

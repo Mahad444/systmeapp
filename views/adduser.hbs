@@ -4,6 +4,7 @@
     <li class="breadcrumb-item active" aria-current="page">New User</li>
   </ol>
   </nav>
+
 {{#if alert }}
 <div class="alert alert-success alert-dismissible fade show" role="alert">
 {{alert}}
@@ -11,8 +12,7 @@
   </div>
  {{/if}}
 
-
-   <form class="row g-3 needs-validation" method="post" action="/adduser" novalidate>
+   <form class="row g-3 needs-validation" method="POST" action="/adduser" novalidate>
  <div class="col-6">
   <div class="form-floating mb-3">
   <input type="text" class="form-control" id="floatingInput" name="FirstName" placeholder="FirstName">
@@ -38,7 +38,7 @@
 </div>
 </div>
 <div class="form-floating">
-  <textarea class="form-control" placeholder="Comments"  id="floatingTextarea" style="height: 200px;"name="comments">{{this.comments}}</textarea>
+  <textarea class="form-control" placeholder="Comments"  id="floatingTextarea" style="height: 200px;" name="comments">{{this.comments}}</textarea>
   <label for="floatingTextarea">Comments</label>
 </div>
 <div class="col-12 d-grid">

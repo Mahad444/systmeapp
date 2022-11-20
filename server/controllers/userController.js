@@ -32,8 +32,10 @@ module.exports = {
 
         connection.release();
 
-        if(!err)
-        res.render('home', {rows});
+        if(!err){
+            let removedUser = req.query.removed;
+        res.render('home', {rows, removedUser});
+        }
         else{
             console.log(err)
     }
@@ -76,23 +78,22 @@ module.exports = {
     },
 
     // CREATING A USER
-    create:(req,res)=>{
-        const {FirstName,LastName,email,phone,comments} = req.body;
+    add:(req,res)=>{ 
+        let {FirstName,LastName,email,phone,comments} =req.body
+
         pool.getConnection((err,connection)=>{
-
-            if (err) throw err ;
-            console.log('connected as ID' + connection.threadId);
-            connection.query("INSERT INTO users SET FirstName = ? , LastName = ?, email = ?, phone = ? , comments  = ? ",[FirstName,LastName,email,phone,comments],(err, rows)=>{
-        connection.release();
-        if(!err)
-        res.render('adduser',{alert : "User Create Successfully."});
-        else{
-        console.log(err);
-    }
-    console.log('the data from the usermanagement Db: \n', rows)
-
-    });
-     }); 
+            if(err) throw err;
+            console.log("connected as ID " + connection.threadId);
+            connection.query("INSERT INTO users SET FirstName = ? , LastName = ? , email = ?, phone = ? , comments = ? ",[FirstName,LastName,email,phone,comments],(err,rows)=>{
+                connection.release()
+                if(!err)
+                res.render('adduser', {alert : "user added successfully ."})
+                else{
+                    console.log(err)
+                }
+                console.log('the data from the usermanagement Db: \n', rows)
+            })
+        })
     },
     // EDIT USER 
     edit:(req,res)=>{
@@ -121,6 +122,7 @@ module.exports = {
     });
      });
     },
+    // UPDATE USER
     update:(req,res)=>{
 
    const {FirstName,LastName,email,phone,comments} = req.body;
@@ -187,8 +189,10 @@ module.exports = {
     
             connection.release();
     
-            if(!err)
-            res.redirect('/' );
+            if(!err){
+                let removedUser= encodeURIComponent('user removed successfully');
+                res.redirect('/?removed='+ removedUser);
+                }
             else{
                 console.log(err)
         }
@@ -196,5 +200,29 @@ module.exports = {
     
         });
      });
-    }           
+    },
+    viewall:(req,res)=>{
+        pool.getConnection((err,connection)=>{
+
+            //if not connected
+            if (err) throw err ;
+            //if connection is successfully
+            console.log('connected as ID' + connection.threadId);
+
+
+        connection.query('SELECT * FROM users WHERE id = ?' ,[req.params.id],(err, rows)=>{
+            // when done with the connection release it 
+    
+            connection.release();
+            if(!err)
+            res.render('viewuser',{rows} );
+            else{
+                console.log(err)
+        }
+        console.log('the data from the usermanagement Db: \n', rows)
+    
+        });
+     });
+
+    }         
 }

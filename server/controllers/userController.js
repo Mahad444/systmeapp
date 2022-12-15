@@ -17,7 +17,7 @@ const pool = mysql.createPool({
 
 
 module.exports = {
-    view:(req,res)=>{
+    viewall:(req,res)=>{
 
         pool.getConnection((err,connection)=>{
             //if not connected
@@ -44,6 +44,7 @@ module.exports = {
     });
     });
     },
+    // Search The User
     find:(req,res)=>{
         pool.getConnection((err,connection)=>{
 
@@ -84,7 +85,7 @@ module.exports = {
         pool.getConnection((err,connection)=>{
             if(err) throw err;
             console.log("connected as ID " + connection.threadId);
-            connection.query("INSERT INTO users SET FirstName = ? , LastName = ? , email = ?, phone = ? , comments = ? ",[FirstName,LastName,email,phone,comments],(err,rows)=>{
+            connection.query("INSERT INTO users SET FirstName = ? , LastName = ? , email = ?, phone = ? , comments = ? ",[FirstName,LastName,email,phone,comments,req.body],(err,rows)=>{
                 connection.release()
                 if(!err)
                 res.render('adduser', {alert : "user added successfully ."})
@@ -201,7 +202,7 @@ module.exports = {
         });
      });
     },
-    viewall:(req,res)=>{
+    view:(req,res)=>{
         pool.getConnection((err,connection)=>{
 
             //if not connected
